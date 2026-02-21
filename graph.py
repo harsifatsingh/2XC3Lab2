@@ -91,6 +91,33 @@ def MVC(G):
                 min_cover = subset
     return min_cover
 
+def approx_vertex_cover(G):
+    cover = set()
+    visited_edges = set()
+
+    # build edge set once
+    edges = set()
+    for u in G.adj:
+        for v in G.adj[u]:
+            if (v, u) not in edges:
+                edges.add((u, v))
+
+    edges = set(edges)
+
+    while edges:
+        u, v = edges.pop()
+
+        # add both endpoints
+        cover.add(u)
+        cover.add(v)
+
+        # remove all edges touching u or v
+        edges = {
+            (x, y) for (x, y) in edges
+            if x not in (u, v) and y not in (u, v)
+        }
+
+    return list(cover)
 
 def BFS2(G, node1, node2):
     if node1 == node2:
